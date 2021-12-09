@@ -1,6 +1,7 @@
 import numpy as np
 from keras.datasets import mnist
 from LanczosSVD_Serial import lanczosSVD
+from LanczosSVD_Parallel import lanczosSVDp
 from sklearn.preprocessing import StandardScaler
 
 
@@ -26,8 +27,11 @@ if __name__ == '__main__':
     # Standardize data
     X = StandardScaler().fit_transform(X)
 
-    # Perform approximate SVD algo
+    # Perform approximate SVD algo (serial)
     projX, U, D, Vt = lanczosSVD(X, k, trunc)
+
+    # Perform approximate SVD algo (serial)
+    projXp, Up, Dp, Vtp = lanczosSVDp(X, k, trunc)
 
     # Perform true SVD algo
     Ux, Sx, Vx = np.linalg.svd(X)
@@ -35,4 +39,5 @@ if __name__ == '__main__':
     # Compare accuracy
     print('Error of approximate SVD vs True SVD:')
     print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
+    print(np.linalg.norm(abs(Vtp) - abs(Vx.T[:, 0:trunc])))
 

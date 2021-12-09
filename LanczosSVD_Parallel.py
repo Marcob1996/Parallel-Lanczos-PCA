@@ -3,21 +3,21 @@ from sklearn.preprocessing import StandardScaler, normalize
 import cupy-cuda102 as cp
 
 
-def lanczosSVD(A, k, trunc):
+def lanczosSVDp(A, k, trunc):
     m = A.shape[0]
     X = A
     if A.shape[0] != A.shape[1]:
-        A = sym_data(A)
+        A = sym_dataP(A)
     else:
         if not np.allclose(A, A.T, rtol=1e-05, atol=1e-08):
-            A = sym_data(A)
-    T, V = lanczos(A, k)
-    U, D, Vt = approx_svd(T, V, m, trunc)
+            A = sym_dataP(A)
+    T, V = lanczosP(A, k)
+    U, D, Vt = approx_svdP(T, V, m, trunc)
     projData = np.matmul(X, Vt)
     return projData, U, D, Vt
 
 
-def lanczos(A, k):
+def lanczosP(A, k):
     r = A.shape[0]
     V = np.zeros((r, k))
     alphas = np.zeros(k)
@@ -51,7 +51,7 @@ def lanczos(A, k):
     return T, V
 
 
-def approx_svd(T, V, m, c):
+def approx_svdP(T, V, m, c):
 
     E_val, Evec = np.linalg.eig(T)
     tempY = V @ Evec
@@ -73,7 +73,7 @@ def approx_svd(T, V, m, c):
     return leftY, E_val, rightY
 
 
-def sym_data(X):
+def sym_dataP(X):
     # Create symmetric matrix S
     r, c = X.shape
     S = np.zeros((r+c, r+c))
