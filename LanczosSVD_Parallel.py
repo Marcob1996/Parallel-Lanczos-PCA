@@ -12,7 +12,7 @@ def lanczosSVD(A, k, trunc):
             A = sym_data(A)
     T, V = lanczos(A, k)
     U, D, Vt = approx_svd(T, V, m, trunc)
-    projData = X@Vt
+    projData = np.matmul(X, Vt)
     return projData, U, D, Vt
 
 

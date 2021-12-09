@@ -1,6 +1,6 @@
 import numpy as np
 from keras.datasets import mnist
-from serialLanczosSVD import lanczosSVD
+from LanczosSVD_Serial import lanczosSVD
 from sklearn.preprocessing import StandardScaler
 
 
