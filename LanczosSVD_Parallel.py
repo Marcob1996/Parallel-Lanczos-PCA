@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.preprocessing import StandardScaler, normalize
-import cupy-cuda102 as cp
+import cupy as cp
 
 
 def lanczosSVDp(A, k, trunc):

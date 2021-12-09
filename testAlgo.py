@@ -41,3 +41,5 @@ if __name__ == '__main__':
     print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
     print(np.linalg.norm(abs(Vtp) - abs(Vx.T[:, 0:trunc])))
 
+
+    print('HEY THIS WORKED')
