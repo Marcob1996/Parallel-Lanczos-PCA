@@ -2,6 +2,20 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler, normalize
 
 
+def lanczosSVD(A, k, trunc):
+    m = A.shape[0]
+    X = A
+    if A.shape[0] != A.shape[1]:
+        A = sym_data(A)
+    else:
+        if not np.allclose(A, A.T, rtol=1e-05, atol=1e-08):
+            A = sym_data(A)
+    T, V = lanczos(A, k)
+    U, D, Vt = approx_svd(T, V, m, trunc)
+    projData = X@Vt
+    return projData, U, D, Vt
+
+
 def lanczos(A, k):
     r = A.shape[0]
     V = np.zeros((r, k))
