@@ -12,7 +12,7 @@ def lanczosSVDp(A, k, trunc):
 
 
 def lanczosP(A, k):
-    r,c = A.shape()
+    r,c = A.shape
     tot = r+c
     V = cp.zeros((tot, k))
     alphas = cp.zeros(k)
