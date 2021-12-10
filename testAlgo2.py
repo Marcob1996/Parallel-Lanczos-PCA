@@ -1,8 +1,8 @@
 import numpy as np
 import time
 from keras.datasets import mnist
-from LanczosSVD_Serial import lanczosSVD
-from LanczosSVD_Parallel2 import lanczosSVDp
+from LSVD_s import lanczosSVD
+from LSVD_pe import lanczosSVDp
 from sklearn.preprocessing import StandardScaler
 
 
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     X = train_X.reshape(train_samples, pixels)
 
     # Take smaller subset of examples to test
-    num_vals = [50000]
+    num_vals = [5000]
     # Hyperparameters
     k = 100
     trunc = 3
@@ -41,12 +41,12 @@ if __name__ == '__main__':
         tp = time.time() - t2
 
         # Perform true SVD algo
-        #Ux, Sx, Vx = np.linalg.svd(Data)
+        Ux, Sx, Vx = np.linalg.svd(Data)
 
         # Compare accuracy
-        #print('Error of approximate SVD vs True SVD:')
+        print('Error of approximate SVD vs True SVD:')
         #print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
-        #print(np.linalg.norm(abs(Vtp) - abs(Vx.T[:, 0:trunc])))
+        print(np.linalg.norm(abs(Vtp) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
         print('Serial Runtime:')

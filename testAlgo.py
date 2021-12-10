@@ -1,8 +1,8 @@
 import numpy as np
 import time
 from keras.datasets import mnist
-from LanczosSVD_Serial import lanczosSVD
-from LanczosSVD_Parallel import lanczosSVDp
+from LSVD_s import lanczosSVD
+from LSVD_p import lanczosSVDp
 from sklearn.preprocessing import StandardScaler
 import cupy as cp
 
