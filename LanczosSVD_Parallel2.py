@@ -5,11 +5,6 @@ def lanczosSVDp(A, k, trunc):
     m = A.shape[0]
     A = cp.asarray(A)
     X = A
-    if A.shape[0] != A.shape[1]:
-        A = sym_dataP(A)
-    else:
-        if not cp.allclose(A, A.T, rtol=1e-05, atol=1e-08):
-            A = sym_dataP(A)
     T, V = lanczosP(A, k)
     U, D, Vt = approx_svdP(T, V, m, trunc)
     projData = cp.matmul(X, Vt)
@@ -17,18 +12,19 @@ def lanczosSVDp(A, k, trunc):
 
 
 def lanczosP(A, k):
-    r = A.shape[0]
-    V = cp.zeros((r, k))
+    r,c = A.shape()
+    tot = r+c
+    V = cp.zeros((tot, k))
     alphas = cp.zeros(k)
     betas = cp.zeros(k)
-    v = cp.random.rand(r)
+    v = cp.random.rand(tot)
     v = v / cp.linalg.norm(v)
     b = 0
-    v_previous = cp.zeros(r).T
+    v_previous = cp.zeros(tot).T
     for i in range(k):
         V[:, i] = v
-        w = cp.dot(A, V[:,i])
-        a = cp.dot(V[:,i], w)
+        w = cp.concatenate((cp.dot(A.T, v[0:r]), cp.dot(A, v[r:])))
+        a = cp.dot(v, w)
         alphas[i] = a
         w = w - b * v_previous - a * v
 
@@ -72,15 +68,4 @@ def approx_svdP(T, V, m, c):
             if count == c:
                 break
 
-    #leftY = normalize(leftY.T, norm="l2").T
-    #rightY = normalize(rightY.T, norm="l2").T
     return leftY, E_val, rightY
-
-
-def sym_dataP(X):
-    # Create symmetric matrix S
-    r, c = X.shape
-    S = cp.zeros((r+c, r+c))
-    S[0:c, c:r+c] = X.T
-    S[c:r+c, 0:c] = X
-    return S

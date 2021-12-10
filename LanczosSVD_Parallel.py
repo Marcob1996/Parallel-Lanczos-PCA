@@ -27,8 +27,8 @@ def lanczosP(A, k):
     v_previous = cp.zeros(r).T
     for i in range(k):
         V[:, i] = v
-        w = cp.dot(A, V[:,i])
-        a = cp.dot(V[:,i], w)
+        w = cp.dot(A, v)
+        a = cp.dot(v, w)
         alphas[i] = a
         w = w - b * v_previous - a * v
 

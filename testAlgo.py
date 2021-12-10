@@ -20,10 +20,11 @@ if __name__ == '__main__':
     # Hyperparameters
     k = 100
     trunc = 3
-    print(cp.get_default_memory_pool().get_limit())
 
     for num in num_vals:
 
+
+        # MAYBE split data up onto multiple GPUs here
         Data = X[0:num, :]
         labels = train_y[0:num].reshape(num, 1)
         m, n = Data.shape
