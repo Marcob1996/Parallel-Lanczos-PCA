@@ -2,9 +2,9 @@ import numpy as np
 import time
 from keras.datasets import mnist
 from LanczosSVD_Serial import lanczosSVD
-from LanczosSVD_Parallel import lanczosSVDp
+from LanczosSVD_Parallel2 import lanczosSVDp
 from sklearn.preprocessing import StandardScaler
-import cupy as cp
+
 
 if __name__ == '__main__':
 
@@ -16,11 +16,10 @@ if __name__ == '__main__':
     X = train_X.reshape(train_samples, pixels)
 
     # Take smaller subset of examples to test
-    num_vals = [30000]
+    num_vals = [50000]
     # Hyperparameters
     k = 100
     trunc = 3
-    print(cp.get_default_memory_pool().get_limit())
 
     for num in num_vals:
 
