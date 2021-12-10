@@ -16,38 +16,41 @@ if __name__ == '__main__':
     X = train_X.reshape(train_samples, pixels)
 
     # Take smaller subset of examples to test
-    num = 30000
-    X = X[0:num, :]
-    labels = train_y[0:num].reshape(num, 1)
-    m, n = X.shape
-
+    num_vals = [50000]
     # Hyperparameters
     k = 100
     trunc = 3
 
-    # Standardize data
-    X = StandardScaler().fit_transform(X)
+    for num in num_vals:
 
-    # Perform approximate SVD algo (serial)
-    t1 = time.time()
-    projX, U, D, Vt = lanczosSVD(X, k, trunc)
-    ts = time.time()-t1
-    # Perform approximate SVD algo (serial)
-    t2 = time.time()
-    projXp, Up, Dp, Vtp = lanczosSVDp(X, k, trunc)
-    tp = time.time() - t2
+        Data = X[0:num, :]
+        labels = train_y[0:num].reshape(num, 1)
+        m, n = Data.shape
 
-    # Perform true SVD algo
-    #Ux, Sx, Vx = np.linalg.svd(X)
+        # Standardize data
+        Data = StandardScaler().fit_transform(Data)
 
-    # Compare accuracy
-    #print('Error of approximate SVD vs True SVD:')
-    #print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
-    #print(np.linalg.norm(abs(Vtp) - abs(Vx.T[:, 0:trunc])))
+        # Perform approximate SVD algo (serial)
+        t1 = time.time()
+        #projX, U, D, Vt = lanczosSVD(Data, k, trunc)
+        ts = time.time()-t1
 
-    # Compare runtime
-    print('Serial Runtime:')
-    print(ts)
-    print('Parallel Runtime:')
-    print(tp)
+        # Perform approximate SVD algo (parallel)
+        t2 = time.time()
+        projXp, Up, Dp, Vtp = lanczosSVDp(Data, k, trunc)
+        tp = time.time() - t2
+
+        # Perform true SVD algo
+        #Ux, Sx, Vx = np.linalg.svd(Data)
+
+        # Compare accuracy
+        #print('Error of approximate SVD vs True SVD:')
+        #print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
+        #print(np.linalg.norm(abs(Vtp) - abs(Vx.T[:, 0:trunc])))
+
+        # Compare runtime
+        print('Serial Runtime:')
+        #print(ts)
+        print('Parallel Runtime:')
+        print(tp)
 

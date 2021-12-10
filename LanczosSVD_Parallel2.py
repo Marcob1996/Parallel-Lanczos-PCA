@@ -33,11 +33,7 @@ def lanczosP(A, k):
         w = w - b * v_previous - a * v
 
         # Re-orthogonalization
-        for t in range(i):
-            adj = cp.dot(V[:, t], w)
-            if adj == 0.0:
-                continue
-            w -= adj * V[:, t]
+        w = reorthogonalization(V, w, i)
 
         b = cp.linalg.norm(w)
         betas[i] = b
@@ -48,6 +44,15 @@ def lanczosP(A, k):
 
     T = cp.diag(alphas) + cp.diag(betas[0:-1], k=1) + cp.diag(betas[0:-1], k=-1)
     return T, V
+
+
+def reorthogonalization(V, w, i):
+    for t in range(i):
+        adj = cp.dot(V[:, t], w)
+        if adj == 0.0:
+            continue
+        w -= adj * V[:, t]
+    return w
 
 
 def approx_svdP(T, V, m, c):
