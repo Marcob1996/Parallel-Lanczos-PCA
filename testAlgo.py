@@ -1,4 +1,5 @@
 import numpy as np
+import time
 from keras.datasets import mnist
 from LanczosSVD_Serial import lanczosSVD
 from LanczosSVD_Parallel import lanczosSVDp
@@ -15,31 +16,38 @@ if __name__ == '__main__':
     X = train_X.reshape(train_samples, pixels)
 
     # Take smaller subset of examples to test
-    num = 5000
+    num = 30000
     X = X[0:num, :]
     labels = train_y[0:num].reshape(num, 1)
     m, n = X.shape
 
     # Hyperparameters
-    k = 60
+    k = 100
     trunc = 3
 
     # Standardize data
     X = StandardScaler().fit_transform(X)
 
     # Perform approximate SVD algo (serial)
+    t1 = time.time()
     projX, U, D, Vt = lanczosSVD(X, k, trunc)
-
+    ts = time.time()-t1
     # Perform approximate SVD algo (serial)
+    t2 = time.time()
     projXp, Up, Dp, Vtp = lanczosSVDp(X, k, trunc)
+    tp = time.time() - t2
 
     # Perform true SVD algo
-    Ux, Sx, Vx = np.linalg.svd(X)
+    #Ux, Sx, Vx = np.linalg.svd(X)
 
     # Compare accuracy
-    print('Error of approximate SVD vs True SVD:')
-    print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
-    print(np.linalg.norm(abs(Vtp) - abs(Vx.T[:, 0:trunc])))
+    #print('Error of approximate SVD vs True SVD:')
+    #print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
+    #print(np.linalg.norm(abs(Vtp) - abs(Vx.T[:, 0:trunc])))
 
+    # Compare runtime
+    print('Serial Runtime:')
+    print(ts)
+    print('Parallel Runtime:')
+    print(tp)
 
-    print('HEY THIS WORKED')
