@@ -29,7 +29,12 @@ def lanczosP(A, k):
         w = w - b * v_previous - a * v
 
         # Re-orthogonalization
-        w = reorthogonalization(V, w, i)
+        #w = reorthogonalization(V, w, i)
+        for t in range(i):
+            adj = cp.dot(V[:, t], w)
+            if adj == 0.0:
+                continue
+            w -= adj * V[:, t]
 
         b = cp.linalg.norm(w)
         betas[i] = b
