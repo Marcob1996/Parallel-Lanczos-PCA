@@ -18,7 +18,7 @@ if __name__ == '__main__':
     # Take smaller subset of examples to test
     num_vals = [5000]
     # Hyperparameters
-    k = 20
+    k = 1
     trunc = 3
 
     for num in num_vals:
@@ -43,16 +43,16 @@ if __name__ == '__main__':
         tp = time.time() - t2
 
         # Perform true SVD algo
-        Ux, Sx, Vx = np.linalg.svd(Data)
+        #Ux, Sx, Vx = np.linalg.svd(Data)
 
         # Compare accuracy
         print('Error of approximate SVD vs True SVD:')
-        print(np.linalg.norm(abs(cp.asnumpy(Vtp)) - abs(Vx.T[:, 0:trunc])))
-        print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
+        #print(np.linalg.norm(abs(cp.asnumpy(Vtp)) - abs(Vx.T[:, 0:trunc])))
+        #print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
         print('Serial Runtime:')
         #print(ts)
         print('Parallel Runtime:')
-        print(tp)
+        #print(tp)
 

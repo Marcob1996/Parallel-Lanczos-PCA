@@ -10,14 +10,9 @@ def lanczosSVDp(A, k, trunc):
     else:
         if not cp.allclose(A, A.T, rtol=1e-05, atol=1e-08):
             A = sym_dataP(A)
-    cp.cuda.Device().synchronize()
 
     T, V = lanczosP(A, k)
-    cp.cuda.Device().synchronize()
-
     U, D, Vt = approx_svdP(T, V, m, trunc)
-    cp.cuda.Device().synchronize()
-
     projData = cp.matmul(X, Vt)
     return projData, U, D, Vt
 
@@ -31,10 +26,13 @@ def lanczosP(A, k):
     v = v / cp.linalg.norm(v)
     b = 0
     v_previous = cp.zeros(r).T
+    cp.cuda.Device().synchronize()
     for i in range(k):
         V[:, i] = v
         w = cp.dot(A, v)
+        cp.cuda.Device().synchronize()
         a = cp.dot(v, w)
+        cp.cuda.Device().synchronize()
         alphas[i] = a
         w = w - b * v_previous - a * v
 
@@ -45,6 +43,7 @@ def lanczosP(A, k):
                 continue
             w -= adj * V[:, t]
 
+        cp.cuda.Device().synchronize()
         b = cp.linalg.norm(w)
         betas[i] = b
         if b < cp.finfo(float).eps:
