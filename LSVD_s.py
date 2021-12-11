@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler, normalize
 
 
-def lanczosSVD(A, k, trunc):
+def lanczosSVD(A, k, trunc, v):
     m = A.shape[0]
     X = A
     if A.shape[0] != A.shape[1]:
@@ -10,19 +10,18 @@ def lanczosSVD(A, k, trunc):
     else:
         if not np.allclose(A, A.T, rtol=1e-05, atol=1e-08):
             A = sym_data(A)
-    T, V = lanczos(A, k)
+    T, V = lanczos(A, k, v)
     U, D, Vt = approx_svd(T, V, m, trunc)
     projData = np.matmul(X, Vt)
     return projData, U, D, Vt
 
 
-def lanczos(A, k):
+def lanczos(A, k, v):
     r = A.shape[0]
     V = np.zeros((r, k))
     alphas = np.zeros(k)
     betas = np.zeros(k)
-    v = np.random.rand(r)
-    v = np.ones(r)
+    #v = np.random.rand(r)
     v = v / np.linalg.norm(v)
     b = 0
     v_previous = np.zeros(r).T

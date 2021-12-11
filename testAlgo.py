@@ -32,14 +32,16 @@ if __name__ == '__main__':
         # Standardize data
         Data = StandardScaler().fit_transform(Data)
 
+        v = cp.random.rand(Data.shape[0] + Data.shape[1])
+
         # Perform approximate SVD algo (serial)
         t1 = time.time()
-        projX, U, D, Vt = lanczosSVD(Data, k, trunc)
+        projX, U, D, Vt = lanczosSVD(Data, k, trunc, v)
         ts = time.time()-t1
 
         # Perform approximate SVD algo (parallel)
         t2 = time.time()
-        projXp, Up, Dp, Vtp = lanczosSVDp(Data, k, trunc)
+        projXp, Up, Dp, Vtp = lanczosSVDp(Data, k, trunc, v)
         tp = time.time() - t2
 
         # Perform true SVD algo

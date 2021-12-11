@@ -1,7 +1,7 @@
 import cupy as cp
 
 
-def lanczosSVDp(A, k, trunc):
+def lanczosSVDp(A, k, trunc, v):
     m = A.shape[0]
     A = cp.asarray(A)
     X = A
@@ -11,19 +11,18 @@ def lanczosSVDp(A, k, trunc):
         if not cp.allclose(A, A.T, rtol=1e-05, atol=1e-08):
             A = sym_dataP(A)
 
-    T, V = lanczosP(A, k)
+    T, V = lanczosP(A, k, v)
     U, D, Vt = approx_svdP(T, V, m, trunc)
     projData = cp.matmul(X, Vt)
     return projData, U, D, Vt
 
 
-def lanczosP(A, k):
+def lanczosP(A, k, v):
     r = A.shape[0]
     V = cp.zeros((r, k))
     alphas = cp.zeros(k)
     betas = cp.zeros(k)
-    v = cp.random.rand(r)
-    v = cp.ones(r)
+    #v = cp.random.rand(r)
     v = v / cp.linalg.norm(v)
     b = 0
     v_previous = cp.zeros(r).T
