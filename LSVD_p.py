@@ -53,7 +53,6 @@ def lanczosP(A, k):
 def approx_svdP(T, V, m, c):
     # Compute Eigenvalues and Eigenvectors of Tridiagonal Matrix from Lanczos
     E_val, Evec = cp.linalg.eigh(T)
-    print(E_val[0:10])
     tempY = V@Evec
     r = tempY.shape[0]
     leftY = tempY[-m:, -c:]/cp.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
