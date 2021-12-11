@@ -20,7 +20,7 @@ if __name__ == '__main__':
     num_vals = [10000, 30000, 50000]
 
     # Hyperparameters
-    k = 100
+    k = 120
     trunc = 3
 
     for num in num_vals:
@@ -44,14 +44,15 @@ if __name__ == '__main__':
         projXpe, Upe, Dpe, Vtpe = lanczosSVDpe(Data, k, trunc)
         tpe = time.time() - t2
 
-        # Perform true SVD algo
-        Ux, Sx, Vx = cp.linalg.svd(cp.array(Data))
+        if num != 50000:
+            # Perform true SVD algo
+            Ux, Sx, Vx = cp.linalg.svd(cp.array(Data))
 
-        # Compare accuracy
-        print('Error of Lanczos Serial SVD vs True SVD:')
-        print(np.linalg.norm(abs(Vt) - abs(cp.asnumpy(Vx.T[:, 0:trunc]))))
-        print('Error of Lanczos Parallel Efficient SVD vs True SVD:')
-        print(cp.linalg.norm(abs(Vtpe) - abs(Vx.T[:, 0:trunc])))
+            # Compare accuracy
+            print('Error of Lanczos Serial SVD vs True SVD:')
+            print(np.linalg.norm(abs(Vt) - abs(cp.asnumpy(Vx.T[:, 0:trunc]))))
+            print('Error of Lanczos Parallel Efficient SVD vs True SVD:')
+            print(cp.linalg.norm(abs(Vtpe) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
         print('Serial Runtime:')
