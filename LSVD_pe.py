@@ -37,7 +37,6 @@ def lanczosP(A, k):
             break
         v_previous = v
         v = (1 / b) * w
-    print(alphas)
     T = cp.diag(alphas) + cp.diag(betas[0:-1], k=1) + cp.diag(betas[0:-1], k=-1)
     return T, V
 
@@ -54,6 +53,7 @@ def reorthogonalization(V, w, i):
 def approx_svdP(T, V, m, c):
     # Compute Eigenvalues and Eigenvectors of Tridiagonal Matrix from Lanczos
     E_val, Evec = cp.linalg.eigh(T)
+    print(E_val[0:10])
     tempY = V @ Evec
     r = tempY.shape[0]
     leftY = tempY[-m:, -c:] / cp.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)

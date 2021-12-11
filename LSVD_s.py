@@ -46,13 +46,13 @@ def lanczos(A, k):
         v = (1 / b) * w
 
     T = np.diag(alphas) + np.diag(betas[0:-1], k=1) + np.diag(betas[0:-1], k=-1)
-    print(alphas)
     return T, V
 
 
 def approx_svd(T, V, m, c):
     # Compute Eigenvalues and Eigenvectors of Tridiagonal Matrix from Lanczos
     Eig_val, Eig_vec = np.linalg.eigh(T)
+    print(Eig_val[0:10])
     tempY = V @ Eig_vec
     r = tempY.shape[0]
     Y_l = tempY[-m:, -c:] / np.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
