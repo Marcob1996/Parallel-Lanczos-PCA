@@ -46,8 +46,6 @@ def lanczosP(A, k, v):
             break
         v_previous = v
         v = (1 / b) * w
-    print(alphas)
-    print(betas)
     T = cp.diag(alphas) + cp.diag(betas[0:-1], k=1) + cp.diag(betas[0:-1], k=-1)
     return T, V
 
@@ -55,17 +53,17 @@ def lanczosP(A, k, v):
 def approx_svdP(T, V, m, c):
 
     E_val, Evec = cp.linalg.eigh(T)
-    print(E_val)
-    tempY = V @ Evec
+    tempY = V@Evec
     r = tempY.shape[0]
-
-    #count = 0
-    #leftY = cp.zeros((m, c))
-    #rightY = cp.zeros((r - m, c))
 
     leftY = tempY[-m:, -c:]/cp.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
     rightY = tempY[0:r-m, -c:]/cp.linalg.norm(tempY[0:r-m, -c:], axis=0, keepdims=True)
 
+    print(leftY[0:10,:])
+
+    # count = 0
+    # leftY = cp.zeros((m, c))
+    # rightY = cp.zeros((r - m, c))
     #for i in range(len(E_val)):
     #    if E_val[i] > 1e-12:
     #        leftY[:, count] = tempY[-m:, i]/cp.linalg.norm(tempY[-m:,i])
@@ -73,9 +71,9 @@ def approx_svdP(T, V, m, c):
     #        count += 1
     #        if count == c:
     #            break
-
     #leftY = normalize(leftY.T, norm="l2").T
     #rightY = normalize(rightY.T, norm="l2").T
+
     return cp.fliplr(leftY), E_val, cp.fliplr(rightY)
 
 
