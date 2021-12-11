@@ -17,13 +17,15 @@ if __name__ == '__main__':
     X = train_X.reshape(train_samples, pixels)
 
     # Take smaller subset of examples to test
-    num_vals = [5000]
+    num_vals = [5000, 10000, 20000]
 
     # Hyperparameters
     k = 60
     trunc = 3
 
     for num in num_vals:
+
+        print('Accuracy and Runtime for %d samples and k = %d' %(num, k))
 
         Data = X[0:num, :]
         labels = train_y[0:num].reshape(num, 1)
