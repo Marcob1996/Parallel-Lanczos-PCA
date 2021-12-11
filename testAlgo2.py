@@ -3,7 +3,7 @@ import cupy as cp
 import time
 from keras.datasets import mnist
 from LSVD_serial_old import lanczosSVD
-from LSVD_pe import lanczosSVDp
+from LSVD_pe import lanczosSVDpe
 from sklearn.preprocessing import StandardScaler
 
 

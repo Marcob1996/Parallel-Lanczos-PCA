@@ -3,6 +3,7 @@ import time
 from keras.datasets import mnist
 from LSVD_s import lanczosSVD
 from LSVD_p import lanczosSVDp
+from LSVD_pe import lanczosSVDpe
 from sklearn.preprocessing import StandardScaler
 import cupy as cp
 
@@ -17,14 +18,13 @@ if __name__ == '__main__':
 
     # Take smaller subset of examples to test
     num_vals = [5000]
+    
     # Hyperparameters
-    k = 20
+    k = 60
     trunc = 3
 
     for num in num_vals:
 
-
-        # MAYBE split data up onto multiple GPUs here
         Data = X[0:num, :]
         labels = train_y[0:num].reshape(num, 1)
         m, n = Data.shape
@@ -32,30 +32,37 @@ if __name__ == '__main__':
         # Standardize data
         Data = StandardScaler().fit_transform(Data)
 
-        v = cp.random.rand(Data.shape[0] + Data.shape[1])
-
         # Perform approximate SVD algo (serial)
         t1 = time.time()
-        projX, U, D, Vt = lanczosSVD(Data, k, trunc, cp.asnumpy(v))
+        projX, U, D, Vt = lanczosSVD(Data, k, trunc)
         ts = time.time()-t1
 
-        print('parallel:')
         # Perform approximate SVD algo (parallel)
         t2 = time.time()
-        projXp, Up, Dp, Vtp = lanczosSVDp(Data, k, trunc, v)
+        projXp, Up, Dp, Vtp = lanczosSVDp(Data, k, trunc)
         tp = time.time() - t2
+
+        # Perform approximate SVD algo (parallel)
+        t3 = time.time()
+        projXpe, Upe, Dpe, Vtpe = lanczosSVDpe(Data, k, trunc)
+        tpe = time.time() - t2
 
         # Perform true SVD algo
         Ux, Sx, Vx = np.linalg.svd(Data)
 
         # Compare accuracy
-        print('Error of approximate SVD vs True SVD:')
-        print(np.linalg.norm(abs(cp.asnumpy(Vtp)) - abs(Vx.T[:, 0:trunc])))
+        print('Error of Lanczos Serial SVD vs True SVD:')
         print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
+        print('Error of Lanczos Parallel SVD vs True SVD:')
+        print(np.linalg.norm(abs(cp.asnumpy(Vtp)) - abs(Vx.T[:, 0:trunc])))
+        print('Error of Lanczos Parallel Efficient SVD vs True SVD:')
+        print(np.linalg.norm(abs(cp.asnumpy(Vtpe)) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
         print('Serial Runtime:')
-        #print(ts)
+        print(ts)
         print('Parallel Runtime:')
-        #print(tp)
+        print(tp)
+        print('Parallel (Efficient) Runtime:')
+        print(tpe)
 

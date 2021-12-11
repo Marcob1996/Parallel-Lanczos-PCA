@@ -1,7 +1,7 @@
 import cupy as cp
 
 
-def lanczosSVDp(A, k, trunc):
+def lanczosSVDpe(A, k, trunc):
     m = A.shape[0]
     A = cp.asarray(A)
     X = A
