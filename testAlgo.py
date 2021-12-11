@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     # Take smaller subset of examples to test
     num_vals = [5000]
-    
+
     # Hyperparameters
     k = 60
     trunc = 3
