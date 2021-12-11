@@ -63,11 +63,11 @@ if __name__ == '__main__':
 
         # Compare runtime
         print('Serial Runtime (Min):')
-        print(np.minimum(times_s))
+        print(np.amin(times_s))
         print('Serial Runtime (Average):')
         print(np.average(times_s))
         print('Parallel Runtime (Min):')
-        print(np.minimum(times_p))
+        print(np.amin(times_p))
         print('Parallel Runtime (Average):')
         print(np.average(times_p))
 
