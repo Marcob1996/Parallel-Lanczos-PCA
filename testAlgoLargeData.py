@@ -40,14 +40,9 @@ if __name__ == '__main__':
         ts = time.time()-t1
 
         # Perform approximate SVD algo (parallel)
-        t2 = time.time()
-        projXp, Up, Dp, Vtp = lanczosSVDp(Data, k, trunc)
-        tp = time.time() - t2
-
-        # Perform approximate SVD algo (parallel)
         t3 = time.time()
         projXpe, Upe, Dpe, Vtpe = lanczosSVDpe(Data, k, trunc)
-        tpe = time.time() - t2
+        tpe = time.time() - t3
 
         # Perform true SVD algo
         Ux, Sx, Vx = np.linalg.svd(Data)
@@ -55,17 +50,13 @@ if __name__ == '__main__':
         # Compare accuracy
         print('Error of Lanczos Serial SVD vs True SVD:')
         print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
-        print('Error of Lanczos Parallel SVD vs True SVD:')
-        print(np.linalg.norm(abs(cp.asnumpy(Vtp)) - abs(Vx.T[:, 0:trunc])))
         print('Error of Lanczos Parallel Efficient SVD vs True SVD:')
         print(np.linalg.norm(abs(cp.asnumpy(Vtpe)) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
         print('Serial Runtime:')
         print(ts)
-        print('Parallel Runtime:')
-        print(tp)
-        print('Parallel (Efficient) Runtime:')
+        print('Parallel (Memory Efficient) Runtime:')
         print(tpe)
 
         print('==================================')
