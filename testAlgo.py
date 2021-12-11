@@ -20,7 +20,7 @@ if __name__ == '__main__':
     num_vals = [5000, 10000, 20000]
 
     # Hyperparameters
-    k = 60
+    k = 100
     trunc = 3
 
     for num in num_vals:
@@ -67,4 +67,8 @@ if __name__ == '__main__':
         print(tp)
         print('Parallel (Efficient) Runtime:')
         print(tpe)
+
+        print('==================================')
+        print('==================================')
+        print('==================================')
 
