@@ -17,7 +17,7 @@ if __name__ == '__main__':
     X = train_X.reshape(train_samples, pixels)
 
     # Take smaller subset of examples to test
-    num_vals = [5000, 10000, 20000, 30000]
+    num_vals = [50000]
 
     # Hyperparameters
     k = 100
@@ -71,4 +71,3 @@ if __name__ == '__main__':
         print('==================================')
         print('==================================')
         print('==================================')
-
