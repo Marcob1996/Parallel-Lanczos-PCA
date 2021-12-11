@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
         # Perform approximate SVD algo (serial)
         t1 = time.time()
-        projX, U, D, Vt = lanczosSVD(Data, k, trunc, v)
+        projX, U, D, Vt = lanczosSVD(Data, k, trunc, cp.asnumpy(v))
         ts = time.time()-t1
 
         # Perform approximate SVD algo (parallel)
