@@ -21,7 +21,7 @@ def lanczos(A, k):
     alphas = np.zeros(k)
     betas = np.zeros(k)
     v = np.random.rand(r)
-    v = cp.ones(r)
+    v = np.ones(r)
     v = v / np.linalg.norm(v)
     b = 0
     v_previous = np.zeros(r).T
