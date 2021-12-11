@@ -23,6 +23,7 @@ def lanczosP(A, k):
     alphas = cp.zeros(k)
     betas = cp.zeros(k)
     v = cp.random.rand(r)
+    v = cp.ones(r)
     v = v / cp.linalg.norm(v)
     b = 0
     v_previous = cp.zeros(r).T
