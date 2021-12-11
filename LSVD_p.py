@@ -26,13 +26,10 @@ def lanczosP(A, k, v):
     v = v / cp.linalg.norm(v)
     b = 0
     v_previous = cp.zeros(r).T
-    cp.cuda.Device().synchronize()
     for i in range(k):
         V[:, i] = v
         w = cp.dot(A, v)
-        cp.cuda.Device().synchronize()
         a = cp.dot(v, w)
-        cp.cuda.Device().synchronize()
         alphas[i] = a
         w = w - b * v_previous - a * v
 
@@ -43,7 +40,6 @@ def lanczosP(A, k, v):
                 continue
             w -= adj * V[:, t]
 
-        cp.cuda.Device().synchronize()
         b = cp.linalg.norm(w)
         betas[i] = b
         if b < cp.finfo(float).eps:
@@ -51,6 +47,7 @@ def lanczosP(A, k, v):
         v_previous = v
         v = (1 / b) * w
     print(alphas)
+    print(betas)
     T = cp.diag(alphas) + cp.diag(betas[0:-1], k=1) + cp.diag(betas[0:-1], k=-1)
     return T, V
 
@@ -58,6 +55,7 @@ def lanczosP(A, k, v):
 def approx_svdP(T, V, m, c):
 
     E_val, Evec = cp.linalg.eigh(T)
+    print(E_val)
     tempY = V @ Evec
     r = tempY.shape[0]
     count = 0

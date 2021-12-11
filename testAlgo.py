@@ -18,7 +18,7 @@ if __name__ == '__main__':
     # Take smaller subset of examples to test
     num_vals = [5000]
     # Hyperparameters
-    k = 1
+    k = 20
     trunc = 3
 
     for num in num_vals:
@@ -39,18 +39,19 @@ if __name__ == '__main__':
         projX, U, D, Vt = lanczosSVD(Data, k, trunc, cp.asnumpy(v))
         ts = time.time()-t1
 
+        print('parallel:')
         # Perform approximate SVD algo (parallel)
         t2 = time.time()
         projXp, Up, Dp, Vtp = lanczosSVDp(Data, k, trunc, v)
         tp = time.time() - t2
 
         # Perform true SVD algo
-        #Ux, Sx, Vx = np.linalg.svd(Data)
+        Ux, Sx, Vx = np.linalg.svd(Data)
 
         # Compare accuracy
         print('Error of approximate SVD vs True SVD:')
-        #print(np.linalg.norm(abs(cp.asnumpy(Vtp)) - abs(Vx.T[:, 0:trunc])))
-        #print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
+        print(np.linalg.norm(abs(cp.asnumpy(Vtp)) - abs(Vx.T[:, 0:trunc])))
+        print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
         print('Serial Runtime:')
