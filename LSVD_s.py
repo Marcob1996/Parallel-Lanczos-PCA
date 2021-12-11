@@ -20,7 +20,6 @@ def lanczos(A, k):
     V = np.zeros((r, k))
     alphas = np.zeros(k)
     betas = np.zeros(k)
-    v = np.random.rand(r)
     v = np.ones(r)
     v = v / np.linalg.norm(v)
     b = 0
@@ -28,7 +27,6 @@ def lanczos(A, k):
     for i in range(k):
         V[:, i] = v
         w = A.dot(v)
-        print(w[34:44])
         a = np.dot(v, w)
         alphas[i] = a
         w = w - b * v_previous - a * v

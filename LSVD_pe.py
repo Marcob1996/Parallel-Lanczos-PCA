@@ -18,15 +18,12 @@ def lanczosP(A, k):
     alphas = cp.zeros(k)
     betas = cp.zeros(k)
     v = cp.random.rand(tot)
-    v = cp.ones(tot)
     v = v / cp.linalg.norm(v)
     b = 0
     v_previous = cp.zeros(tot).T
     for i in range(k):
         V[:, i] = v
-        w = cp.concatenate((cp.dot(A.T, v[0:r]), cp.dot(A, v[r:])))
-        print('parallel:')
-        print(w[34:44])
+        w = cp.concatenate((cp.dot(A.T, v[-r:]), cp.dot(A, v[0:c])))
         a = cp.dot(v, w)
         alphas[i] = a
         w = w - b * v_previous - a * v
