@@ -63,7 +63,7 @@ def approx_svdP(T, V, m, c):
     #leftY = cp.zeros((m, c))
     #rightY = cp.zeros((r - m, c))
 
-    leftY = tempY[-m, -c:]/cp.linalg.norm(tempY[-m, -c:], axis=0, keepdims=True)
+    leftY = tempY[-m:, -c:]/cp.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
     rightY = tempY[0:r-m, -c:]/cp.linalg.norm(tempY[0:r-m, -c:], axis=0, keepdims=True)
 
     #for i in range(len(E_val)):
@@ -76,7 +76,7 @@ def approx_svdP(T, V, m, c):
 
     #leftY = normalize(leftY.T, norm="l2").T
     #rightY = normalize(rightY.T, norm="l2").T
-    return leftY, E_val, rightY
+    return cp.fliplr(leftY), E_val, cp.fliplr(rightY)
 
 
 def sym_dataP(X):
