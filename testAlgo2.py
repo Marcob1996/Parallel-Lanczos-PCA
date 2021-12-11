@@ -1,4 +1,5 @@
 import numpy as np
+import cupy as cp
 import time
 from keras.datasets import mnist
 from LSVD_s import lanczosSVD
@@ -46,7 +47,7 @@ if __name__ == '__main__':
         # Compare accuracy
         print('Error of approximate SVD vs True SVD:')
         #print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
-        print(np.linalg.norm(abs(Vtp) - abs(Vx.T[:, 0:trunc])))
+        print(np.linalg.norm(abs(cp.asnumpy(Vtp)) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
         print('Serial Runtime:')

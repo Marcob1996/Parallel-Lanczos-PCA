@@ -16,7 +16,7 @@ if __name__ == '__main__':
     X = train_X.reshape(train_samples, pixels)
 
     # Take smaller subset of examples to test
-    num_vals = [30000]
+    num_vals = [5000]
     # Hyperparameters
     k = 100
     trunc = 3
@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
         # Perform approximate SVD algo (serial)
         t1 = time.time()
-        #projX, U, D, Vt = lanczosSVD(Data, k, trunc)
+        projX, U, D, Vt = lanczosSVD(Data, k, trunc)
         ts = time.time()-t1
 
         # Perform approximate SVD algo (parallel)
@@ -43,12 +43,12 @@ if __name__ == '__main__':
         tp = time.time() - t2
 
         # Perform true SVD algo
-        #Ux, Sx, Vx = np.linalg.svd(Data)
+        Ux, Sx, Vx = np.linalg.svd(Data)
 
         # Compare accuracy
-        #print('Error of approximate SVD vs True SVD:')
-        #print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
-        #print(np.linalg.norm(abs(Vtp) - abs(Vx.T[:, 0:trunc])))
+        print('Error of approximate SVD vs True SVD:')
+        print(np.linalg.norm(abs(cp.asnumpy(Vtp)) - abs(Vx.T[:, 0:trunc])))
+        print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
         print('Serial Runtime:')
