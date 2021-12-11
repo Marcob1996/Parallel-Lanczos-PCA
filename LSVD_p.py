@@ -63,8 +63,8 @@ def approx_svdP(T, V, m, c):
     #leftY = cp.zeros((m, c))
     #rightY = cp.zeros((r - m, c))
 
-    leftY = tempY[-m, 0:c]/cp.linalg.norm(tempY[-m, 0:c], axis=0, keepdims=True)
-    rightY = tempY[0:r-m, 0:c]/cp.linalg.norm(tempY[0:r-m, 0:c], axis=0, keepdims=True)
+    leftY = tempY[-m, -c:]/cp.linalg.norm(tempY[-m, -c:], axis=0, keepdims=True)
+    rightY = tempY[0:r-m, -c:]/cp.linalg.norm(tempY[0:r-m, -c:], axis=0, keepdims=True)
 
     #for i in range(len(E_val)):
     #    if E_val[i] > 1e-12:
