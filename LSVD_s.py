@@ -46,6 +46,7 @@ def lanczos(A, k):
         v_previous = v
         v = (1 / b) * w
 
+    print(alphas)
     T = np.diag(alphas) + np.diag(betas[0:-1], k=1) + np.diag(betas[0:-1], k=-1)
     return T, V
 
