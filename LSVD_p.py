@@ -1,7 +1,7 @@
 import cupy as cp
 
 
-def lanczosSVDp(A, k, trunc, v):
+def lanczosSVDp(A, k, trunc):
     m = A.shape[0]
     A = cp.asarray(A)
     X = A
@@ -11,18 +11,18 @@ def lanczosSVDp(A, k, trunc, v):
         if not cp.allclose(A, A.T, rtol=1e-05, atol=1e-08):
             A = sym_dataP(A)
 
-    T, V = lanczosP(A, k, v)
+    T, V = lanczosP(A, k)
     U, D, Vt = approx_svdP(T, V, m, trunc)
     projData = cp.matmul(X, Vt)
     return projData, U, D, Vt
 
 
-def lanczosP(A, k, v):
+def lanczosP(A, k):
     r = A.shape[0]
     V = cp.zeros((r, k))
     alphas = cp.zeros(k)
     betas = cp.zeros(k)
-    #v = cp.random.rand(r)
+    v = cp.random.rand(r)
     v = v / cp.linalg.norm(v)
     b = 0
     v_previous = cp.zeros(r).T
@@ -51,29 +51,11 @@ def lanczosP(A, k, v):
 
 
 def approx_svdP(T, V, m, c):
-
     E_val, Evec = cp.linalg.eigh(T)
     tempY = V@Evec
     r = tempY.shape[0]
-
     leftY = tempY[-m:, -c:]/cp.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
     rightY = tempY[0:r-m, -c:]/cp.linalg.norm(tempY[0:r-m, -c:], axis=0, keepdims=True)
-
-    print(leftY[0:10,:])
-
-    # count = 0
-    # leftY = cp.zeros((m, c))
-    # rightY = cp.zeros((r - m, c))
-    #for i in range(len(E_val)):
-    #    if E_val[i] > 1e-12:
-    #        leftY[:, count] = tempY[-m:, i]/cp.linalg.norm(tempY[-m:,i])
-    #        rightY[:, count] = tempY[0:r - m, i]/cp.linalg.norm(tempY[0:r-m, i])
-    #        count += 1
-    #        if count == c:
-    #            break
-    #leftY = normalize(leftY.T, norm="l2").T
-    #rightY = normalize(rightY.T, norm="l2").T
-
     return cp.fliplr(leftY), E_val, cp.fliplr(rightY)
 
 

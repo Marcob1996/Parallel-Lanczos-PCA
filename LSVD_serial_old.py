@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.preprocessing import normalize
+from sklearn.preprocessing import StandardScaler, normalize
 
 
 def lanczosSVD(A, k, trunc):
@@ -51,13 +51,27 @@ def lanczos(A, k):
 
 
 def approx_svd(T, V, m, c):
-    # Compute Eigenvalues and Eigenvectors of Tridiagonal Matrix from Lanczos
-    Eig_val, Eig_vec = np.linalg.eigh(T)
-    tempY = V @ Eig_vec
+
+    E_val, Evec = np.linalg.eig(T)
+    tempY = V @ Evec
     r = tempY.shape[0]
-    Y_l = tempY[-m:, -c:] / np.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
-    Y_r = tempY[0:r - m, -c:] / np.linalg.norm(tempY[0:r - m, -c:], axis=0, keepdims=True)
-    return np.fliplr(Y_l), Eig_val, np.fliplr(Y_r)
+    count = 0
+    leftY = np.zeros((m, c))
+    rightY = np.zeros((r - m, c))
+
+    for i in range(len(E_val)):
+        if E_val[i] > 1e-12:
+            leftY[:, count] = tempY[-m:, i]
+            rightY[:, count] = tempY[0:r - m, i]
+            count += 1
+            if count == c:
+                break
+
+    leftY = normalize(leftY.T, norm="l2").T
+    rightY = normalize(rightY.T, norm="l2").T
+
+    print(leftY[0:10, :])
+    return leftY, E_val, rightY
 
 
 def sym_data(X):
