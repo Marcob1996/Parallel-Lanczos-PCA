@@ -13,4 +13,4 @@
 #SBATCH --nice=0
 #SBATCH --mail-type=END   
 
-python testAlgoLargeData.py
+python testAlgoParallel.py
