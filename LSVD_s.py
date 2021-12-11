@@ -56,6 +56,7 @@ def approx_svd(T, V, m, c):
     r = tempY.shape[0]
     Y_l = tempY[-m:, -c:] / np.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
     Y_r = tempY[0:r - m, -c:] / np.linalg.norm(tempY[0:r - m, -c:], axis=0, keepdims=True)
+    print(leftY[0:10, :])
     return np.fliplr(Y_l), Eig_val, np.fliplr(Y_r)
 
 

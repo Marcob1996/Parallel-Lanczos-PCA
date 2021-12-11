@@ -57,6 +57,7 @@ def approx_svdP(T, V, m, c):
     r = tempY.shape[0]
     leftY = tempY[-m:, -c:]/cp.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
     rightY = tempY[0:r-m, -c:]/cp.linalg.norm(tempY[0:r-m, -c:], axis=0, keepdims=True)
+    print(leftY[0:10, :])
     return cp.fliplr(leftY), E_val, cp.fliplr(rightY)
 
 
