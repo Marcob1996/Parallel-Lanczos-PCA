@@ -21,7 +21,7 @@ if __name__ == '__main__':
     # Hyperparameters
     k = 150
     trunc = 3
-    runs = 3
+    runs = 4
 
     for num in num_vals:
 
