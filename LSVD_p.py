@@ -58,17 +58,21 @@ def approx_svdP(T, V, m, c):
     print(E_val)
     tempY = V @ Evec
     r = tempY.shape[0]
-    count = 0
-    leftY = cp.zeros((m, c))
-    rightY = cp.zeros((r - m, c))
 
-    for i in range(len(E_val)):
-        if E_val[i] > 1e-12:
-            leftY[:, count] = tempY[-m:, i]/cp.linalg.norm(tempY[-m:,i])
-            rightY[:, count] = tempY[0:r - m, i]/cp.linalg.norm(tempY[0:r-m, i])
-            count += 1
-            if count == c:
-                break
+    #count = 0
+    #leftY = cp.zeros((m, c))
+    #rightY = cp.zeros((r - m, c))
+
+    leftY = tempY[-m, 0:c]/cp.linalg.norm(tempY[-m, 0:c], axis=0, keepdims=True)
+    rightY = tempY[0:r-m, 0:c]/cp.linalg.norm(tempY[0:r-m, 0:c], axis=0, keepdims=True)
+
+    #for i in range(len(E_val)):
+    #    if E_val[i] > 1e-12:
+    #        leftY[:, count] = tempY[-m:, i]/cp.linalg.norm(tempY[-m:,i])
+    #        rightY[:, count] = tempY[0:r - m, i]/cp.linalg.norm(tempY[0:r-m, i])
+    #        count += 1
+    #        if count == c:
+    #            break
 
     #leftY = normalize(leftY.T, norm="l2").T
     #rightY = normalize(rightY.T, norm="l2").T
