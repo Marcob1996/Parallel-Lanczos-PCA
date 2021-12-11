@@ -46,6 +46,7 @@ def lanczosP(A, k):
             break
         v_previous = v
         v = (1 / b) * w
+    print(alphas)
     T = cp.diag(alphas) + cp.diag(betas[0:-1], k=1) + cp.diag(betas[0:-1], k=-1)
     return T, V
 
@@ -56,8 +57,7 @@ def approx_svdP(T, V, m, c):
     tempY = V@Evec
     r = tempY.shape[0]
     leftY = tempY[-m:, -c:]/cp.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
-    rightY = tempY[0:r-m, -c:]/cp.linalg.norm(tempY[0:r-m, -c:], axis=0, keepdims=True)
-    print(leftY[0:10, :])
+    rightY = tempY[0:(r-m), -c:]/cp.linalg.norm(tempY[0:(r-m), -c:], axis=0, keepdims=True)
     return cp.fliplr(leftY), E_val, cp.fliplr(rightY)
 
 

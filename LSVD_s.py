@@ -46,6 +46,7 @@ def lanczos(A, k):
         v = (1 / b) * w
 
     T = np.diag(alphas) + np.diag(betas[0:-1], k=1) + np.diag(betas[0:-1], k=-1)
+    print(alphas)
     return T, V
 
 
@@ -55,8 +56,7 @@ def approx_svd(T, V, m, c):
     tempY = V @ Eig_vec
     r = tempY.shape[0]
     Y_l = tempY[-m:, -c:] / np.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
-    Y_r = tempY[0:r - m, -c:] / np.linalg.norm(tempY[0:r - m, -c:], axis=0, keepdims=True)
-    print(Y_l[0:10, :])
+    Y_r = tempY[0:(r - m), -c:] / np.linalg.norm(tempY[0:(r - m), -c:], axis=0, keepdims=True)
     return np.fliplr(Y_l), Eig_val, np.fliplr(Y_r)
 
 
