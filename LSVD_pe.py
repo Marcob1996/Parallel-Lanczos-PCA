@@ -26,7 +26,7 @@ def lanczosP(A, k):
         V[:, i] = v
         w = cp.concatenate((cp.dot(A.T, v[0:r]), cp.dot(A, v[r:])))
         print('parallel:')
-        print(cp.nonzero(w)[0:10])
+        print(w[34:44])
         a = cp.dot(v, w)
         alphas[i] = a
         w = w - b * v_previous - a * v

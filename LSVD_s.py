@@ -28,7 +28,7 @@ def lanczos(A, k):
     for i in range(k):
         V[:, i] = v
         w = A.dot(v)
-        print(np.nonzero(w)[0:10])
+        print(w[34:44])
         a = np.dot(v, w)
         alphas[i] = a
         w = w - b * v_previous - a * v
