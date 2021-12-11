@@ -34,7 +34,7 @@ if __name__ == '__main__':
         # Standardize data
         Data = StandardScaler().fit_transform(Data)
 
-        times_s = np.zeros(runs)
+        times_s = cp.zeros(runs)
         # Perform approximate SVD algo (serial)
         for j in range(runs):
             t1 = time.time()
@@ -42,7 +42,7 @@ if __name__ == '__main__':
             ts = time.time()-t1
             times_s[j] = ts
 
-        times_p = np.zeros(runs)
+        times_p = cp.zeros(runs)
         # Perform approximate SVD algo (parallel)
         for j in range(runs):
             t2 = time.time()
@@ -62,15 +62,15 @@ if __name__ == '__main__':
 
         # Compare runtime
         print('Serial Runtime (Minimum):')
-        print(np.amin(times_s))
+        print(cp.amin(times_s))
         print('Serial Runtime (Average):')
-        print(np.average(times_s))
+        print(cp.average(times_s))
         print('All Serial Runtimes:')
         print(times_s)
         print('Parallel Runtime (Minimum):')
-        print(np.amin(times_p))
+        print(cp.amin(times_p))
         print('Parallel Runtime (Average):')
-        print(np.average(times_p))
+        print(cp.average(times_p))
         print('All Parallel Runtimes:')
         print(times_p)
 
