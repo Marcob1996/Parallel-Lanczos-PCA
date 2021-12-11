@@ -45,13 +45,13 @@ if __name__ == '__main__':
         tpe = time.time() - t2
 
         # Perform true SVD algo
-        Ux, Sx, Vx = cp.linalg.svd(Data)
+        Ux, Sx, Vx = cp.linalg.svd(cp.array(Data))
 
         # Compare accuracy
         print('Error of Lanczos Serial SVD vs True SVD:')
-        print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
+        print(np.linalg.norm(abs(Vt) - abs(cp.asnumpy(Vx.T[:, 0:trunc]))))
         print('Error of Lanczos Parallel Efficient SVD vs True SVD:')
-        print(np.linalg.norm(abs(cp.asnumpy(Vtpe)) - abs(Vx.T[:, 0:trunc])))
+        print(cp.linalg.norm(abs(Vtpe) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
         print('Serial Runtime:')
