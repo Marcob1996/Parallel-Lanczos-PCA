@@ -20,8 +20,9 @@ if __name__ == '__main__':
     num_vals = [10000, 30000, 50000]
 
     # Hyperparameters
-    k = 120
+    k = 150
     trunc = 3
+    runs = 3
 
     for num in num_vals:
 
@@ -34,15 +35,21 @@ if __name__ == '__main__':
         # Standardize data
         Data = StandardScaler().fit_transform(Data)
 
+        times_s = np.zeros(runs)
         # Perform approximate SVD algo (serial)
-        t1 = time.time()
-        projX, U, D, Vt = lanczosSVD(Data, k, trunc)
-        ts = time.time()-t1
+        for j in range(runs):
+            t1 = time.time()
+            projX, U, D, Vt = lanczosSVD(Data, k, trunc)
+            ts = time.time()-t1
+            times_s[j] = ts
 
+        times_p = np.zeros(runs)
         # Perform approximate SVD algo (parallel)
-        t2 = time.time()
-        projXpe, Upe, Dpe, Vtpe = lanczosSVDpe(Data, k, trunc)
-        tpe = time.time() - t2
+        for j in range(runs):
+            t2 = time.time()
+            projXpe, Upe, Dpe, Vtpe = lanczosSVDpe(Data, k, trunc)
+            tpe = time.time() - t2
+            times_p[j] = tpe
 
         if num != 50000:
             # Perform true SVD algo
@@ -55,10 +62,14 @@ if __name__ == '__main__':
             print(cp.linalg.norm(abs(Vtpe) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
-        print('Serial Runtime:')
-        print(ts)
-        print('Parallel (Memory Efficient) Runtime:')
-        print(tpe)
+        print('Serial Runtime (Min):')
+        print(np.minimum(times_s))
+        print('Serial Runtime (Average):')
+        print(np.average(times_s))
+        print('Parallel Runtime (Min):')
+        print(np.minimum(times_p))
+        print('Parallel Runtime (Average):')
+        print(np.average(times_p))
 
         print('==================================')
         print('==================================')
