@@ -52,20 +52,9 @@ def reorthogonalization(V, w, i):
 
 
 def approx_svdP(T, V, m, c):
-
     E_val, Evec = cp.linalg.eigh(T)
     tempY = V @ Evec
     r = tempY.shape[0]
-    count = 0
-    leftY = cp.zeros((m, c))
-    rightY = cp.zeros((r - m, c))
-
-    for i in range(len(E_val)):
-        if E_val[i] > 1e-12:
-            leftY[:, count] = tempY[-m:, i]/cp.linalg.norm(tempY[-m:,i])
-            rightY[:, count] = tempY[0:r - m, i]/cp.linalg.norm(tempY[0:r-m, i])
-            count += 1
-            if count == c:
-                break
-
-    return leftY, E_val, rightY
+    leftY = tempY[-m:, -c:] / cp.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
+    rightY = tempY[0:r - m, -c:] / cp.linalg.norm(tempY[0:r - m, -c:], axis=0, keepdims=True)
+    return cp.fliplr(leftY), E_val, cp.fliplr(rightY)
