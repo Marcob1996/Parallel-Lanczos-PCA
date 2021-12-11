@@ -61,11 +61,11 @@ if __name__ == '__main__':
             print(cp.linalg.norm(abs(Vtpe) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
-        print('Serial Runtime (Min):')
+        print('Serial Runtime (Minimum):')
         print(np.amin(times_s))
         print('Serial Runtime (Average):')
         print(np.average(times_s))
-        print('Parallel Runtime (Min):')
+        print('Parallel Runtime (Minimum):')
         print(np.amin(times_p))
         print('Parallel Runtime (Average):')
         print(np.average(times_p))
