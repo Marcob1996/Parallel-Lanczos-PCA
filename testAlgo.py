@@ -3,7 +3,6 @@ import time
 from keras.datasets import mnist
 from LSVD_s import lanczosSVD
 from LSVD_p import lanczosSVDp
-from LSVD_pe import lanczosSVDpe
 from sklearn.preprocessing import StandardScaler
 import cupy as cp
 
@@ -17,11 +16,12 @@ if __name__ == '__main__':
     X = train_X.reshape(train_samples, pixels)
 
     # Take smaller subset of examples to test
-    num_vals = [5000, 10000, 20000, 30000]
+    num_vals = [10000, 30000, 50000]
 
     # Hyperparameters
-    k = 100
+    k = 150
     trunc = 3
+    runs = 3
 
     for num in num_vals:
 
@@ -34,41 +34,42 @@ if __name__ == '__main__':
         # Standardize data
         Data = StandardScaler().fit_transform(Data)
 
+        times_s = np.zeros(runs)
         # Perform approximate SVD algo (serial)
-        t1 = time.time()
-        projX, U, D, Vt = lanczosSVD(Data, k, trunc)
-        ts = time.time()-t1
+        for j in range(runs):
+            t1 = time.time()
+            projX, U, D, Vt = lanczosSVD(Data, k, trunc)
+            ts = time.time()-t1
+            times_s[j] = ts
 
+        times_p = np.zeros(runs)
         # Perform approximate SVD algo (parallel)
-        t2 = time.time()
-        projXp, Up, Dp, Vtp = lanczosSVDp(Data, k, trunc)
-        tp = time.time() - t2
+        for j in range(runs):
+            t2 = time.time()
+            projXpe, Upe, Dpe, Vtpe = lanczosSVDp(Data, k, trunc)
+            tpe = time.time() - t2
+            times_p[j] = tpe
 
-        # Perform approximate SVD algo (parallel)
-        t3 = time.time()
-        projXpe, Upe, Dpe, Vtpe = lanczosSVDpe(Data, k, trunc)
-        tpe = time.time() - t3
+        if num != 50000:
+            # Perform true SVD algo
+            Ux, Sx, Vx = cp.linalg.svd(cp.array(Data))
 
-        # Perform true SVD algo
-        Ux, Sx, Vx = np.linalg.svd(Data)
-
-        # Compare accuracy
-        print('Error of Lanczos Serial SVD vs True SVD:')
-        print(np.linalg.norm(abs(Vt) - abs(Vx.T[:, 0:trunc])))
-        print('Error of Lanczos Parallel SVD vs True SVD:')
-        print(np.linalg.norm(abs(cp.asnumpy(Vtp)) - abs(Vx.T[:, 0:trunc])))
-        print('Error of Lanczos Parallel Memory Efficient SVD vs True SVD:')
-        print(np.linalg.norm(abs(cp.asnumpy(Vtpe)) - abs(Vx.T[:, 0:trunc])))
+            # Compare accuracy
+            print('Error of Lanczos Serial SVD vs True SVD:')
+            print(np.linalg.norm(abs(Vt) - abs(cp.asnumpy(Vx.T[:, 0:trunc]))))
+            print('Error of Lanczos Parallel SVD vs True SVD:')
+            print(cp.linalg.norm(abs(Vtpe) - abs(Vx.T[:, 0:trunc])))
 
         # Compare runtime
-        print('Serial Runtime:')
-        print(ts)
-        print('Parallel Runtime:')
-        print(tp)
-        print('Parallel (Memory Efficient) Runtime:')
-        print(tpe)
+        print('Serial Runtime (Min):')
+        print(np.amin(times_s))
+        print('Serial Runtime (Average):')
+        print(np.average(times_s))
+        print('Parallel Runtime (Min):')
+        print(np.amin(times_p))
+        print('Parallel Runtime (Average):')
+        print(np.average(times_p))
 
         print('==================================')
         print('==================================')
         print('==================================')
-
