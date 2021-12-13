@@ -50,7 +50,7 @@ def approx_svd(T, V, m, c):
 
 def reorthogonalization(V, w, i):
     for t in range(i):
-        adj = cp.dot(V[:, t], w)
+        adj = np.dot(V[:, t], w)
         if adj == 0.0:
             continue
         w -= adj * V[:, t]
