@@ -3,41 +3,30 @@ import numpy as np
 
 def lanczosSVD(A, k, trunc):
     m = A.shape[0]
-    X = A
-    if A.shape[0] != A.shape[1]:
-        A = sym_data(A)
-    else:
-        if not np.allclose(A, A.T, rtol=1e-05, atol=1e-08):
-            A = sym_data(A)
     T, V = lanczos(A, k)
     U, D, Vt = approx_svd(T, V, m, trunc)
-    projData = np.matmul(X, Vt)
+    projData = np.matmul(A, Vt)
     return projData, U, D, Vt
 
 
 def lanczos(A, k):
-    r = A.shape[0]
-    V = np.zeros((r, k))
+    r, c = A.shape
+    tot = r + c
+    V = np.zeros((tot, k))
     alphas = np.zeros(k)
     betas = np.zeros(k)
-    v = np.ones(r)
+    v = np.random.rand(tot)
     v = v / np.linalg.norm(v)
     b = 0
-    v_previous = np.zeros(r).T
+    v_previous = np.zeros(tot).T
     for i in range(k):
         V[:, i] = v
-        w = A.dot(v)
+        w = np.concatenate((np.dot(A.T, v[-r:]), np.dot(A, v[0:c])))
         a = np.dot(v, w)
         alphas[i] = a
         w = w - b * v_previous - a * v
-
         # Re-orthogonalization
-        for t in range(i):
-            adj = np.dot(V[:, t], w)
-            if adj == 0.0:
-                continue
-            w -= adj * V[:, t]
-
+        w = reorthogonalization(V, w, i)
         b = np.linalg.norm(w)
         betas[i] = b
         if b < np.finfo(float).eps:
@@ -59,10 +48,10 @@ def approx_svd(T, V, m, c):
     return np.fliplr(Y_l), Eig_val, np.fliplr(Y_r)
 
 
-def sym_data(X):
-    # Create symmetric matrix S
-    r, c = X.shape
-    S = np.zeros((r+c, r+c))
-    S[0:c, c:r+c] = X.T
-    S[c:r+c, 0:c] = X
-    return S
+def reorthogonalization(V, w, i):
+    for t in range(i):
+        adj = cp.dot(V[:, t], w)
+        if adj == 0.0:
+            continue
+        w -= adj * V[:, t]
+    return w
