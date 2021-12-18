@@ -54,7 +54,7 @@ def reorthogonalization(V, w, i):
 def approx_svdP(T, V, m, c):
     # Compute Eigenvalues and Eigenvectors of Tridiagonal Matrix from Lanczos
     E_val, Evec = cp.linalg.eigh(T)
-    tempY = V @ Evec
+    tempY = cp.matmul(V, Evec)
     r = tempY.shape[0]
     leftY = tempY[-m:, -c:] / cp.linalg.norm(tempY[-m:, -c:], axis=0, keepdims=True)
     rightY = tempY[0:(r-m), -c:] / cp.linalg.norm(tempY[0:(r-m), -c:], axis=0, keepdims=True)
