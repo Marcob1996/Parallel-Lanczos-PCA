@@ -46,19 +46,20 @@ if __name__ == '__main__':
         # Perform approximate SVD algo (parallel)
         for j in range(runs):
             t2 = time.time()
-            projXpe, Upe, Dpe, Vtpe = lanczosSVDp(Data, k, trunc)
-            tpe = time.time() - t2
-            times_p[j] = tpe
+            projXp, Up, Dp, Vtp = lanczosSVDp(Data, k, trunc)
+            tp = time.time() - t2
+            times_p[j] = tp
 
         if num != 50000:
             # Perform true SVD algo
             Ux, Sx, Vx = cp.linalg.svd(cp.array(Data))
+            trueProjX = Ux[:, 0:trunc]*Sx[0:trunc]
 
             # Compare accuracy
-            print('Error of Lanczos Serial SVD vs True SVD:')
-            print(np.linalg.norm(abs(Vt) - abs(cp.asnumpy(Vx.T[:, 0:trunc]))))
-            print('Error of Lanczos Parallel SVD vs True SVD:')
-            print(cp.linalg.norm(abs(Vtpe) - abs(Vx.T[:, 0:trunc])))
+            print('PCA Error Between Lanczos Serial SVD and True SVD:')
+            print(np.linalg.norm(abs(projX) - abs(cp.asnumpy(trueProjX))))
+            print('PCA Error Between Lanczos Parallel SVD and True SVD:')
+            print(cp.linalg.norm(abs(projXp) - abs(trueProjX)))
 
         # Compare runtime
         print('Serial Runtime (Minimum):')

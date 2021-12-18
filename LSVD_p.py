@@ -7,7 +7,8 @@ def lanczosSVDp(A, k, trunc):
     X = A
     T, V = lanczosP(A, k)
     U, D, Vt = approx_svdP(T, V, m, trunc)
-    projData = cp.matmul(X, Vt)
+    projData = U[:, 0:trunc]*D[0:trunc]
+    # projData = cp.matmul(X, Vt)
     return projData, U, D, Vt
 
 

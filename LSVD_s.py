@@ -5,13 +5,13 @@ def lanczosSVD(A, k, trunc):
     m = A.shape[0]
     T, V = lanczos(A, k)
     U, D, Vt = approx_svd(T, V, m, trunc)
-    projData = np.matmul(A, Vt)
+    projData = U[:, 0:trunc] * D[0:trunc]
     return projData, U, D, Vt
 
 
 def lanczos(A, k):
-    r, c = A.shape
-    tot = r + c
+    m, n = A.shape
+    tot = m + n
     V = np.zeros((tot, k))
     alphas = np.zeros(k)
     betas = np.zeros(k)
@@ -21,7 +21,7 @@ def lanczos(A, k):
     v_previous = np.zeros(tot).T
     for i in range(k):
         V[:, i] = v
-        w = np.concatenate((np.dot(A.T, v[-r:]), np.dot(A, v[0:c])))
+        w = np.concatenate((np.dot(A.T, v[-m:]), np.dot(A, v[0:n])))
         a = np.dot(v, w)
         alphas[i] = a
         w = w - b * v_previous - a * v
@@ -33,7 +33,6 @@ def lanczos(A, k):
             break
         v_previous = v
         v = (1 / b) * w
-
     T = np.diag(alphas) + np.diag(betas[0:-1], k=1) + np.diag(betas[0:-1], k=-1)
     return T, V
 
