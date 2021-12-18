@@ -4,11 +4,9 @@ import cupy as cp
 def lanczosSVDp(A, k, trunc):
     m = A.shape[0]
     A = cp.asarray(A)
-    X = A
     T, V = lanczosP(A, k)
     U, D, Vt = approx_svdP(T, V, m, trunc)
     projData = U[:, 0:trunc]*D[0:trunc]
-    # projData = cp.matmul(X, Vt)
     return projData, U, D, Vt
 
 
