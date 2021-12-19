@@ -15,6 +15,7 @@ if __name__ == '__main__':
     pixels = train_X.shape[1] * train_X.shape[2]
     X = train_X.reshape(train_samples, pixels)
     X = np.concatenate((X, test_X.reshape(test_samples, pixels)))
+    label = np.concatenate(train_y.reshape(train_samples, 1), test_y.reshape(test_samples, 1))
 
     # Take smaller subset of examples to test
     num_vals = [10000, 30000, 60000]
@@ -29,7 +30,7 @@ if __name__ == '__main__':
         print('Accuracy and Runtime for %d samples and k = %d' %(num, k))
 
         Data = X[0:num, :]
-        labels = train_y[0:num].reshape(num, 1)
+        labels = label[0:num]
         m, n = Data.shape
 
         # Standardize data
