@@ -46,6 +46,8 @@ if __name__ == '__main__':
 
     count = 0
     for k in k_vals:
+        print(k)
+        print(k.type)
         # Compute serial time
         t3dk = time.time()
         projX, Uk, Dk, Vtk = lanczosSVD(X, k, trunc)
