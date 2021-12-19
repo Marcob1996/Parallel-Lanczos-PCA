@@ -14,12 +14,13 @@ if __name__ == '__main__':
     test_samples = test_X.shape[0]
     pixels = train_X.shape[1] * train_X.shape[2]
     X = train_X.reshape(train_samples, pixels)
+    X = np.concatenate(X, test_X.reshape(test_samples, pixels))
 
     # Take smaller subset of examples to test
-    num_vals = [10000, 30000, 50000]
+    num_vals = [10000, 30000, 60000]
 
     # Hyperparameters
-    k = 150
+    k = 175
     trunc = 3
     runs = 4
 
