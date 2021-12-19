@@ -9,7 +9,7 @@
 #SBATCH --partition=scavenger
 #SBATCH --gres=gpu:1
 #SBATCH --ntasks=1
-#SBATCH --mem 16gb                                              # memory required by job; if unit is not specified MB will be assumed
+#SBATCH --mem 32gb      # memory required by job; if unit is not specified MB will be assumed
 #SBATCH --nice=0
 #SBATCH --mail-type=END
 
