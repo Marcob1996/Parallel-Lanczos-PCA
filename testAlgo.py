@@ -20,7 +20,7 @@ if __name__ == '__main__':
     num_vals = [10000, 30000, 60000]
 
     # Hyperparameters
-    k = 200
+    k = 100
     trunc = 3
     runs = 4
 
