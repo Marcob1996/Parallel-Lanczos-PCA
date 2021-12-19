@@ -20,7 +20,7 @@ if __name__ == '__main__':
     num_vals = [10000, 30000, 60000]
 
     # Hyperparameters
-    k = 175
+    k = 200
     trunc = 3
     runs = 4
 
@@ -51,16 +51,16 @@ if __name__ == '__main__':
             tp = time.time() - t2
             times_p[j] = tp
 
-        if num != 50000:
-            # Perform true SVD algo
-            Ux, Sx, Vx = cp.linalg.svd(cp.array(Data))
-            trueProjX = Ux[:, 0:trunc]*Sx[0:trunc]
+        # if num != 60000:
+        # Perform true SVD algo
+        Ux, Sx, Vx = cp.linalg.svd(cp.array(Data))
+        trueProjX = Ux[:, 0:trunc]*Sx[0:trunc]
 
-            # Compare accuracy
-            print('PCA Error Between Lanczos Serial SVD and True SVD:')
-            print(np.linalg.norm(abs(projX) - abs(cp.asnumpy(trueProjX))))
-            print('PCA Error Between Lanczos Parallel SVD and True SVD:')
-            print(cp.linalg.norm(abs(projXp) - abs(trueProjX)))
+        # Compare accuracy
+        print('PCA Error Between Lanczos Serial SVD and True SVD:')
+        print(np.linalg.norm(abs(projX) - abs(cp.asnumpy(trueProjX))))
+        print('PCA Error Between Lanczos Parallel SVD and True SVD:')
+        print(cp.linalg.norm(abs(projXp) - abs(trueProjX)))
 
         # Compare runtime
         print('Serial Runtime (Minimum):')
