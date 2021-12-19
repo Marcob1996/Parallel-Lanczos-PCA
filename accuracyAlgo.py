@@ -42,8 +42,8 @@ if __name__ == '__main__':
     trueProjX = pca.transform(X)
     elapsed_pca = time.time() - pca_t
 
-    # Compute projected data
-    # trueProjX = Ux[:, 0:dim] * Sx[0:dim]
+    # Flush out parallel overhead by running once
+    projXp, Ukp, Dkp, Vtkp = lanczosSVDp(X, 1, trunc)
 
     count = 0
     for k in k_vals:
