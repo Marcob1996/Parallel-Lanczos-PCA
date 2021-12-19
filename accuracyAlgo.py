@@ -68,8 +68,8 @@ if __name__ == '__main__':
         errors_inf[count] = np.linalg.norm(abs(projXk) - abs(trueProjX), np.inf)
         errors_2norm[count] = np.linalg.norm(abs(projXk) - abs(trueProjX))
 
-        errors_inf_p[count] = np.linalg.norm(abs(projXkp) - abs(trueProjX), np.inf)
-        errors_2norm_p[count] = np.linalg.norm(abs(projXkp) - abs(trueProjX))
+        errors_inf_p[count] = cp.linalg.norm(abs(projXkp) - abs(cp.array(trueProjX)), np.inf)
+        errors_2norm_p[count] = cp.linalg.norm(abs(projXkp) - abs(cp.array(trueProjX)))
 
         count += 1
 
