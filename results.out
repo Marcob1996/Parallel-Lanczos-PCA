@@ -1,0 +1,56 @@
+Accuracy and Runtime for 10000 samples and k = 100
+PCA Error Between Lanczos Serial SVD and True SVD:
+4.0621457542630765e-11
+PCA Error Between Lanczos Parallel SVD and True SVD:
+3.9838027112865615e-11
+Serial Runtime (Minimum):
+1.314866304397583
+Serial Runtime (Average):
+1.3231557607650757
+All Serial Runtimes:
+[1.34018636 1.3153441  1.3148663  1.32222629]
+Parallel Runtime (Minimum):
+0.793001651763916
+Parallel Runtime (Average):
+1.242541790008545
+All Parallel Runtimes:
+[2.58766389 0.79614854 0.79300165 0.79335308]
+==================================
+==================================
+==================================
+Accuracy and Runtime for 30000 samples and k = 100
+PCA Error Between Lanczos Serial SVD and True SVD:
+6.686784397802267e-11
+PCA Error Between Lanczos Parallel SVD and True SVD:
+6.971189805397609e-11
+Serial Runtime (Minimum):
+4.532176971435547
+Serial Runtime (Average):
+4.539863348007202
+All Serial Runtimes:
+[4.54830599 4.54051256 4.53217697 4.53845787]
+Parallel Runtime (Minimum):
+0.8800790309906006
+Parallel Runtime (Average):
+0.910638689994812
+All Parallel Runtimes:
+[0.99453568 0.88007903 0.88280249 0.88513756]
+==================================
+==================================
+==================================
+Accuracy and Runtime for 60000 samples and k = 100
+Serial Runtime (Minimum):
+9.042355298995972
+Serial Runtime (Average):
+9.0640349984169
+All Serial Runtimes:
+[9.0423553  9.05995345 9.05620599 9.09762526]
+Parallel Runtime (Minimum):
+1.0047569274902344
+Parallel Runtime (Average):
+1.061176359653473
+All Parallel Runtimes:
+[1.22908926 1.00535607 1.00550318 1.00475693]
+==================================
+==================================
+==================================

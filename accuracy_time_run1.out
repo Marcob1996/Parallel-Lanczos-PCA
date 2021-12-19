@@ -1,0 +1,64 @@
+Accuracy and Runtime for 5000 samples and k = 100
+Error of Lanczos Serial SVD vs True SVD:
+8.273513953625186e-15
+Error of Lanczos Parallel SVD vs True SVD:
+5.570766016356424e-15
+Error of Lanczos Parallel Memory Efficient SVD vs True SVD:
+5.98866538271268e-15
+Serial Runtime:
+0.6325109004974365
+Parallel Runtime:
+4.394538402557373
+Parallel (Memory Efficient) Runtime:
+0.7861809730529785
+==================================
+==================================
+==================================
+Accuracy and Runtime for 10000 samples and k = 100
+Error of Lanczos Serial SVD vs True SVD:
+5.439952381014314e-15
+Error of Lanczos Parallel SVD vs True SVD:
+7.087293550457885e-15
+Error of Lanczos Parallel Memory Efficient SVD vs True SVD:
+5.2689091563523656e-15
+Serial Runtime:
+1.7766602039337158
+Parallel Runtime:
+0.9981505870819092
+Parallel (Memory Efficient) Runtime:
+0.8786425590515137
+==================================
+==================================
+==================================
+Accuracy and Runtime for 20000 samples and k = 100
+Error of Lanczos Serial SVD vs True SVD:
+8.107296694564484e-15
+Error of Lanczos Parallel SVD vs True SVD:
+4.2329672904725785e-15
+Error of Lanczos Parallel Memory Efficient SVD vs True SVD:
+5.174876862816865e-15
+Serial Runtime:
+5.672391176223755
+Parallel Runtime:
+1.458414077758789
+Parallel (Memory Efficient) Runtime:
+0.8400547504425049
+==================================
+==================================
+==================================
+Accuracy and Runtime for 30000 samples and k = 100
+Error of Lanczos Serial SVD vs True SVD:
+6.865984993651306e-15
+Error of Lanczos Parallel SVD vs True SVD:
+6.01704934498666e-15
+Error of Lanczos Parallel Memory Efficient SVD vs True SVD:
+5.346613424951998e-15
+Serial Runtime:
+12.15848422050476
+Parallel Runtime:
+2.386312484741211
+Parallel (Memory Efficient) Runtime:
+0.88287353515625
+==================================
+==================================
+==================================
