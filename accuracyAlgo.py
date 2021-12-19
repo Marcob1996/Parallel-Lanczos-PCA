@@ -59,7 +59,7 @@ if __name__ == '__main__':
         print('Run for k = %d is Complete!' % k)
         # Store times
         times_s[count] = elapsed_t3dk
-        times_p[count] = elapsed_t3dk
+        times_p[count] = elapsed_t3dkp
 
         # Compute projected data
         projXk = Uk[:, 0:dim] * Dk[0:dim]
