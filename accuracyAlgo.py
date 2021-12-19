@@ -52,7 +52,7 @@ if __name__ == '__main__':
         elapsed_t3dk = time.time() - t3dk
         # Compute parallel time
         t3dkp = time.time()
-        projXp, Ukp, Dkp, Vtkp = lanczosSVDp(X, k, trunc)
+        projXp, Ukp, Dkp, Vtkp = lanczosSVDp(X, k.astype(int), trunc)
         elapsed_t3dkp = time.time() - t3dkp
 
         print('Run for k = %d is Complete!' % k)
