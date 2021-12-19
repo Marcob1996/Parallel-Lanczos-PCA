@@ -43,9 +43,9 @@ if __name__ == '__main__':
             ts = time.time()-t1
             times_s[j] = ts
 
-        times_p = cp.zeros(runs)
+        times_p = cp.zeros(runs+1)
         # Perform approximate SVD algo (parallel)
-        for j in range(runs):
+        for j in range(runs+1):
             t2 = time.time()
             projXp, Up, Dp, Vtp = lanczosSVDp(Data, k, trunc)
             tp = time.time() - t2
@@ -70,11 +70,11 @@ if __name__ == '__main__':
         print('All Serial Runtimes:')
         print(times_s)
         print('Parallel Runtime (Minimum):')
-        print(cp.amin(times_p))
+        print(cp.amin(times_p[1:]))
         print('Parallel Runtime (Average):')
-        print(cp.average(times_p))
+        print(cp.average(times_p[1:]))
         print('All Parallel Runtimes:')
-        print(times_p)
+        print(times_p[1:])
 
         print('==================================')
         print('==================================')
