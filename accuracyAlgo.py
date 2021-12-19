@@ -40,11 +40,12 @@ if __name__ == '__main__':
     pca.fit(X)
     trueProjX = pca.transform(X)
     elapsed_pca = time.time() - pca_t
+    print(trueProjX.shape)
 
     # Serial Full SVD Time
     svd_t = time.time()
     Ux, Sx, Vx = np.linalg.svd(X[0:30000, :])
-    trueProjX = Ux[:, 0:trunc] * Sx[0:trunc]
+    svdX = Ux[:, 0:trunc] * Sx[0:trunc]
     elapsed_svd = time.time() - svd_t
 
     # Flush out parallel overhead by running once
@@ -66,16 +67,12 @@ if __name__ == '__main__':
         times_s[count] = elapsed_t3dk
         times_p[count] = elapsed_t3dkp
 
-        # Compute projected data
-        projXk = Uk[:, 0:dim] * Dk[0:dim]
-        projXkp = Ukp[:, 0:dim] * Dkp[0:dim]
-
         # Compute and store error
-        errors_inf[count] = np.linalg.norm(abs(projXk) - abs(trueProjX), np.inf)
-        errors_2norm[count] = np.linalg.norm(abs(projXk) - abs(trueProjX))
+        errors_inf[count] = np.linalg.norm(abs(projX) - abs(trueProjX), np.inf)
+        errors_2norm[count] = np.linalg.norm(abs(projX) - abs(trueProjX))
 
-        errors_inf_p[count] = np.linalg.norm(abs(cp.asnumpy(projXkp)) - abs(trueProjX), np.inf)
-        errors_2norm_p[count] = np.linalg.norm(abs(cp.asnumpy(projXkp)) - abs(trueProjX))
+        errors_inf_p[count] = np.linalg.norm(abs(cp.asnumpy(projXp)) - abs(trueProjX), np.inf)
+        errors_2norm_p[count] = np.linalg.norm(abs(cp.asnumpy(projXp)) - abs(trueProjX))
 
         count += 1
 
@@ -90,7 +87,7 @@ if __name__ == '__main__':
     fig2 = plt.figure()
     plt.plot(k_vals, errors_2norm)
     plt.xlabel('K Values')
-    plt.ylabel('Low Rank Approximation Error (2-Norm)')
+    plt.ylabel('Low Rank Approximation Error (Frobenius Norm)')
     plt.yscale('log')
     plt.ylim([1e-13, 5000])
     fig2.savefig('2norm_error_serial.png')
@@ -112,7 +109,7 @@ if __name__ == '__main__':
     fig5 = plt.figure()
     plt.plot(k_vals, errors_2norm_p)
     plt.xlabel('K Values')
-    plt.ylabel('Low Rank Approximation Error (2-Norm)')
+    plt.ylabel('Low Rank Approximation Error (Frobenius Norm)')
     plt.yscale('log')
     plt.ylim([1e-13, 5000])
     fig5.savefig('2norm_error_parallel.png')
