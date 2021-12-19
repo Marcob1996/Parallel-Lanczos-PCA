@@ -1,0 +1,57 @@
+(70000, 3)
+Run for k = 1 is Complete!
+Run for k = 10 is Complete!
+Run for k = 20 is Complete!
+Run for k = 30 is Complete!
+Run for k = 40 is Complete!
+Run for k = 50 is Complete!
+Run for k = 60 is Complete!
+Run for k = 70 is Complete!
+Run for k = 80 is Complete!
+Run for k = 90 is Complete!
+Run for k = 100 is Complete!
+Run for k = 110 is Complete!
+Run for k = 120 is Complete!
+Run for k = 130 is Complete!
+Run for k = 140 is Complete!
+Run for k = 150 is Complete!
+Full SVD Serial Runtime on 30,000 MNIST Samples:
+241.30238890647888
+Sklearn Runtime on 60,000 MNIST Samples:
+3.7838239669799805
+Values of k Tested:
+[  1  10  20  30  40  50  60  70  80  90 100 110 120 130 140 150]
+Serial Run-times (s):
+[[ 0.07850432]
+ [ 0.78620648]
+ [ 1.64144301]
+ [ 2.60018086]
+ [ 3.63791704]
+ [ 4.63962579]
+ [ 5.73712397]
+ [ 7.00186419]
+ [ 8.43484664]
+ [ 9.65427852]
+ [11.07081795]
+ [12.67409945]
+ [14.10928416]
+ [15.72588277]
+ [17.58908939]
+ [19.40404558]]
+Parallel Run-times (s):
+[[0.12926221]
+ [0.1752398 ]
+ [0.19239378]
+ [0.2483809 ]
+ [0.31335616]
+ [0.39528108]
+ [0.49239802]
+ [0.61017013]
+ [0.7094667 ]
+ [0.8500495 ]
+ [0.99118114]
+ [1.15661454]
+ [1.34077668]
+ [1.53056026]
+ [1.73490214]
+ [1.97503567]]
