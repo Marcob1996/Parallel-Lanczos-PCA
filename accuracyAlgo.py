@@ -36,11 +36,16 @@ if __name__ == '__main__':
 
     # Time the difference between computing true SVD and approximate SVD via Lanczos
     pca_t = time.time()
-    #Ux, Sx, Vx = np.linalg.svd(X)
     pca = PCA(n_components=dim, svd_solver='arpack')
     pca.fit(X)
     trueProjX = pca.transform(X)
     elapsed_pca = time.time() - pca_t
+
+    # Serial Full SVD Time
+    svd_t = time.time()
+    Ux, Sx, Vx = np.linalg.svd(X[0:30000, :])
+    trueProjX = Ux[:, 0:trunc] * Sx[0:trunc]
+    elapsed_svd = time.time() - svd_t
 
     # Flush out parallel overhead by running once
     projXp, Ukp, Dkp, Vtkp = lanczosSVDp(X, 1, trunc)
@@ -117,3 +122,14 @@ if __name__ == '__main__':
     plt.xlabel('K Values')
     plt.ylabel('Runtime (seconds)')
     fig6.savefig('runtime_parallel.png')
+
+    print('Full SVD Serial Runtime on 30,000 MNIST Samples:')
+    print(elapsed_svd)
+    print('Sklearn Runtime on 60,000 MNIST Samples:')
+    print(elapsed_pca)
+    print('Values of k Tested:')
+    print(k_vals)
+    print('Serial Run-times (s):')
+    print(times_s)
+    print('Parallel Run-times (s):')
+    print(times_p)
