@@ -15,7 +15,7 @@ if __name__ == '__main__':
     pixels = train_X.shape[1] * train_X.shape[2]
     X = train_X.reshape(train_samples, pixels)
     X = np.concatenate((X, test_X.reshape(test_samples, pixels)))
-    label = np.concatenate(train_y.reshape(train_samples, 1), test_y.reshape(test_samples, 1))
+    label = np.concatenate((train_y.reshape(train_samples, 1), test_y.reshape(test_samples, 1)))
     trunc = 3
 
     # Compare values of k (to determine how varying k affects accuracy)
