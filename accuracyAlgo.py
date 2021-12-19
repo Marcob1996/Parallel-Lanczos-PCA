@@ -3,6 +3,7 @@ import time
 from keras.datasets import mnist
 from LSVD_s import lanczosSVD
 from LSVD_p import lanczosSVDp
+from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import cupy as cp
 
@@ -30,13 +31,18 @@ if __name__ == '__main__':
     errors_2norm_p = np.zeros((k_vals.shape[0], 1))
     dim = 3
 
+    X = StandardScaler().fit_transform(X)
+
     # Time the difference between computing true SVD and approximate SVD via Lanczos
-    tsvd = time.time()
+    pca = time.time()
     Ux, Sx, Vx = np.linalg.svd(X)
-    elapsed_tsvd = time.time() - tsvd
+    pca = PCA(n_components=dim, svd_solver='arpack')
+    pca.fit(X)
+    trueProjX = pca.transform(X)
+    elapsed_pca = time.time() - pca
 
     # Compute projected data
-    trueProjX = Ux[:, 0:dim] * Sx[0:dim]
+    # trueProjX = Ux[:, 0:dim] * Sx[0:dim]
 
     count = 0
     for k in k_vals:
