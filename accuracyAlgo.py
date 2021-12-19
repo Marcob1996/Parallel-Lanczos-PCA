@@ -34,12 +34,12 @@ if __name__ == '__main__':
     X = StandardScaler().fit_transform(X)
 
     # Time the difference between computing true SVD and approximate SVD via Lanczos
-    pca = time.time()
-    Ux, Sx, Vx = np.linalg.svd(X)
+    pca_t = time.time()
+    #Ux, Sx, Vx = np.linalg.svd(X)
     pca = PCA(n_components=dim, svd_solver='arpack')
     pca.fit(X)
     trueProjX = pca.transform(X)
-    elapsed_pca = time.time() - pca
+    elapsed_pca = time.time() - pca_t
 
     # Compute projected data
     # trueProjX = Ux[:, 0:dim] * Sx[0:dim]
