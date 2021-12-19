@@ -5,6 +5,7 @@ from LSVD_s import lanczosSVD
 from LSVD_p import lanczosSVDp
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 import cupy as cp
 
 if __name__ == '__main__':
@@ -73,3 +74,46 @@ if __name__ == '__main__':
 
         count += 1
 
+    fig1 = plt.figure()
+    plt.plot(k_vals, errors_inf)
+    plt.xlabel('K Values')
+    plt.ylabel('Low Rank Approximation Error (Infinity Norm)')
+    plt.yscale('log')
+    plt.ylim([1e-13, 5000])
+    fig1.savefig('inf_error_serial.png')
+
+    fig2 = plt.figure()
+    plt.plot(k_vals, errors_2norm)
+    plt.xlabel('K Values')
+    plt.ylabel('Low Rank Approximation Error (2-Norm)')
+    plt.yscale('log')
+    plt.ylim([1e-13, 5000])
+    fig2.savefig('2norm_error_serial.png')
+
+    fig3 = plt.figure()
+    plt.plot(k_vals, times_s)
+    plt.xlabel('K Values')
+    plt.ylabel('Runtime (seconds)')
+    fig3.savefig('runtime_serial.png')
+
+    fig4 = plt.figure()
+    plt.plot(k_vals, errors_inf_p)
+    plt.xlabel('K Values')
+    plt.ylabel('Low Rank Approximation Error (Infinity Norm)')
+    plt.yscale('log')
+    plt.ylim([1e-13, 5000])
+    fig4.savefig('inf_error_parallel.png')
+
+    fig5 = plt.figure()
+    plt.plot(k_vals, errors_2norm_p)
+    plt.xlabel('K Values')
+    plt.ylabel('Low Rank Approximation Error (2-Norm)')
+    plt.yscale('log')
+    plt.ylim([1e-13, 5000])
+    fig5.savefig('2norm_error_parallel.png')
+
+    fig6 = plt.figure()
+    plt.plot(k_vals, times_p)
+    plt.xlabel('K Values')
+    plt.ylabel('Runtime (seconds)')
+    fig6.savefig('runtime_parallel.png')
